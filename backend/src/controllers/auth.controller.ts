@@ -5,6 +5,7 @@ import { db } from "../db";
 import { users } from "../db/schema";
 import { eq } from "drizzle-orm";
 import { registerSchema } from "../types";
+import { generateToken } from "../utils/generateToken";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
@@ -15,25 +16,38 @@ export const registerUser = async (req: Request, res: Response) => {
       .from(users)
       .where(eq(users.email, email));
 
-    if (existingUser.length > 0) {
+    const user = existingUser[0];
+    if (user) {
       return res.status(400).json({ error: "user already exists" });
     }
+
     const passwordHash = await bcrypt.hash(password, 10);
 
-    await db.insert(users).values({
-      email,
-      passwordHash,
-      role: "user",
-    });
+    const [newUser] = await db
+      .insert(users)
+      .values({
+        email,
+        passwordHash,
+        role: "user",
+      })
+      .returning();
+
+    if (!newUser) {
+      return res.status(500).json({ error: "Failed to register user" });
+    }
+
+    const token = generateToken(newUser.id);
 
     res.status(201).json({
       status: "success",
       message: "User registered successfully",
       data: {
         user: {
-          email,
-          role: "user",
+          id: newUser.id,
+          email: newUser.email,
+          role: newUser.role,
         },
+        token,
       },
     });
   } catch (error) {
@@ -63,15 +77,18 @@ export const loginUser = async (req: Request, res: Response) => {
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
+    const token = generateToken(user.id);
 
     res.status(200).json({
       status: "success",
       message: "User logged in successfully",
       data: {
         user: {
-          email,
-          role: "user",
+          id: user.id,
+          email: user.email,
+          role: user.role,
         },
+        token,
       },
     });
   } catch (error) {
