@@ -15,9 +15,9 @@ export const registerUser = async (req: Request, res: Response) => {
       .from(users)
       .where(eq(users.email, email));
 
-    existingUser.length > 0 &&
-      res.status(400).json({ error: "user already exists" });
-
+    if (existingUser.length > 0) {
+      return res.status(400).json({ error: "user already exists" });
+    }
     const passwordHash = await bcrypt.hash(password, 10);
 
     await db.insert(users).values({

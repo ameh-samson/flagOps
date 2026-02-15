@@ -5,7 +5,7 @@ import type { Express } from "express";
 import { authRouter } from "./routes/auth.routes";
 
 const app: Express = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use(cors());
