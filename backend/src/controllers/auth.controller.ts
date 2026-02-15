@@ -25,7 +25,17 @@ export const registerUser = async (req: Request, res: Response) => {
       passwordHash,
       role: "user",
     });
-    res.status(201).json({ message: "User registered successfully" });
+
+    res.status(201).json({
+      status: "success",
+      message: "User registered successfully",
+      data: {
+        user: {
+          email,
+          role: "user",
+        },
+      },
+    });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ errors: error.issues });
@@ -34,4 +44,40 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-export const loginUser = async (req: Request, res: Response) => {};
+export const loginUser = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = registerSchema.parse(req.body);
+
+    const existingUser = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email));
+
+    const user = existingUser[0];
+    if (!user) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "User logged in successfully",
+      data: {
+        user: {
+          email,
+          role: "user",
+        },
+      },
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ errors: error.issues });
+    }
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
