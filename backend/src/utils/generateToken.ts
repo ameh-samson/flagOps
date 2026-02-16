@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import type { StringValue } from "ms";
 import type { Response } from "express";
 
-export const generateToken = (userId: number, res: Response) => {
+export const generateToken = (userId: string, res: Response) => {
   const payload = { id: userId };
   const secret = process.env.JWT_SECRET_KEY as string;
   const expiresIn = (process.env.JWT_EXPIRES_IN || "1h") as StringValue;
