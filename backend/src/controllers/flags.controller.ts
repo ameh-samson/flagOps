@@ -14,7 +14,7 @@ export const createFlag = async (req: Request, res: Response) => {
         name,
         description,
         environment,
-        defaultState: true,
+        defaultState: false,
         rolloutPercentage,
         createdBy: userId,
       })
@@ -32,6 +32,8 @@ export const createFlag = async (req: Request, res: Response) => {
           id: newFlag.id,
           name: newFlag.name,
           description: newFlag.description,
+          environment: newFlag.environment,
+          defaultState: newFlag.defaultState,
         },
       },
     });
