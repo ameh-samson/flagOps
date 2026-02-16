@@ -1,6 +1,7 @@
 CREATE TABLE "flags" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
+	"description" text,
 	"environment" text NOT NULL,
 	"default_state" boolean NOT NULL,
 	"rollout_percentage" integer DEFAULT 0 NOT NULL,
@@ -13,6 +14,7 @@ CREATE TABLE "flags" (
 CREATE TABLE "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"email" text NOT NULL,
+	"name" text NOT NULL,
 	"password_hash" text NOT NULL,
 	"role" text NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,

@@ -7,7 +7,7 @@ import { generateToken } from "../utils/generateToken";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
     const existingUser = await db
       .select()
@@ -21,12 +21,17 @@ export const registerUser = async (req: Request, res: Response) => {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
+    const existingUsers = await db.select().from(users);
+
+    const role = existingUsers.length === 0 ? "admin" : "user";
+
     const [newUser] = await db
       .insert(users)
       .values({
+        name,
         email,
         passwordHash,
-        role: "admin",
+        role,
       })
       .returning();
 
@@ -42,6 +47,7 @@ export const registerUser = async (req: Request, res: Response) => {
       data: {
         user: {
           id: newUser.id,
+          name: newUser.name,
           email: newUser.email,
           role: newUser.role,
         },

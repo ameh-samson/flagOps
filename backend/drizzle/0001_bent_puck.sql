@@ -1,1 +1,0 @@
-ALTER TABLE "flags" ADD COLUMN "description" text;

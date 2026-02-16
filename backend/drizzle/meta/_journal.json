@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1771251683366,
-      "tag": "0000_goofy_redwing",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1771258541235,
-      "tag": "0001_bent_puck",
+      "when": 1771261121029,
+      "tag": "0000_silly_the_call",
       "breakpoints": true
     }
   ]

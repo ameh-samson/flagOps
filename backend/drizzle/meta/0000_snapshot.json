@@ -1,5 +1,5 @@
 {
-  "id": "49214abf-5299-4217-8537-2e5b4561aa6a",
+  "id": "f79ea25d-4c1e-4b37-ad53-4ae34f3843ed",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -20,6 +20,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "environment": {
           "name": "environment",
@@ -121,6 +127,12 @@
         },
         "email": {
           "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true
