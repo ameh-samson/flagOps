@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { db } from "../db";
 import { flags } from "../db/schema";
+import { eq } from "drizzle-orm";
 
 export const getFlags = async (req: Request, res: Response) => {
   try {
@@ -11,6 +12,25 @@ export const getFlags = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({ status: "success", data: allflags });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getFlagById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+
+    const [flag] = await db
+      .select()
+      .from(flags)
+      .where(eq(flags.id, id as string));
+
+    if (!flag) {
+      return res.status(404).json({ error: "Flag not found" });
+    }
+
+    res.status(200).json({ status: "success", data: flag });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
