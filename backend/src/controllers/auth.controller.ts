@@ -26,7 +26,7 @@ export const registerUser = async (req: Request, res: Response) => {
       .values({
         email,
         passwordHash,
-        role: "user",
+        role: "admin",
       })
       .returning();
 

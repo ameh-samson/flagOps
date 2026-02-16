@@ -21,6 +21,7 @@ export const flags = pgTable(
   {
     id: uuid("id").defaultRandom().primaryKey(),
     name: text("name").notNull(),
+    description: text("description"),
     environment: text("environment", {
       enum: ["development", "staging", "production"],
     }).notNull(),
