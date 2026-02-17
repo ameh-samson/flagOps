@@ -1,17 +1,141 @@
-# React + TypeScript + Vite
+# FlagOps Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend application for FlagOps feature flag management system built with React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Vite** - Build tool and dev server
+- **Redux Toolkit** - State management
+- **Tailwind CSS** - Styling
+- **Vitest** - Testing framework
+- **React Testing Library** - Component testing
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- Node.js (v20+)
+- npm or yarn
 
-Note: This will impact Vite dev & build performances.
+## Setup
+
+### 1. Install dependencies
+```bash
+npm install
+```
+
+### 2. Environment variables
+
+Create a `.env` file in the frontend directory:
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+## Development
+
+Start the development server:
+```bash
+npm run dev
+```
+
+Server runs on `http://localhost:5173`
+
+## Production
+
+Build for production:
+```bash
+npm run build
+```
+
+Preview production build:
+```bash
+npm run preview
+```
+
+## Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm test` - Run tests in watch mode
+- `npm run test:coverage` - Run tests with coverage
+
+## Testing Setup
+
+### Installation
+
+```bash
+npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom @vitest/coverage-istanbul
+```
+
+**Note:** All testing packages are already installed in this project.
+
+### Configuration
+
+**vite.config.ts:**
+```typescript
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  // ... other config
+  test: {
+    setupFiles: ["./test-setup.js"],
+    environment: "jsdom",
+    coverage: {
+      provider: "istanbul",
+    },
+  },
+});
+```
+
+**test-setup.js:**
+```javascript
+import "@testing-library/jest-dom/vitest";
+import { afterEach } from 'vitest'
+import { cleanup } from "@testing-library/react";
+
+afterEach(() => {
+    cleanup();
+});
+```
+
+### Writing Tests
+
+Tests are co-located with components:
+
+```
+src/
+├── components/
+│   ├── Button.tsx
+│   └── Button.test.tsx
+```
+
+## Project Structure
+
+```
+frontend/
+├── src/
+│   ├── components/     # Reusable components
+│   ├── pages/          # Page components
+│   ├── store/          # Redux store
+│   ├── hooks/          # Custom hooks
+│   ├── utils/          # Utility functions
+│   ├── App.tsx         # Root component
+│   └── main.tsx        # Entry point
+├── public/             # Static assets
+├── test-setup.js       # Test configuration
+└── vite.config.ts      # Vite configuration
+```
+
+## Features
+
+- React Compiler enabled for optimized performance
+- Redux Toolkit for state management
+- Tailwind CSS for styling
+- TypeScript for type safety
+- Vitest + React Testing Library for testing
+- ESLint for code quality
 
 ## Expanding the ESLint configuration
 
