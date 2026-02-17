@@ -63,8 +63,8 @@ See [frontend/README.md](frontend/README.md) for details.
 DATABASE_URL=your_neon_database_url
 PORT=8000
 JWT_SECRET_KEY=your_jwt_secret_key
-NODE_ENV
-JWT_EXPIRES_IN
+NODE_ENV=production
+JWT_EXPIRES_IN=1h
 ```
 
 **Frontend** (`.env`)
