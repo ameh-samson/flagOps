@@ -13,12 +13,14 @@ A feature flag management system for controlling feature rollouts across multipl
 ## Tech Stack
 
 **Backend**
+
 - Express + TypeScript
 - Drizzle ORM + Neon PostgreSQL
 - JWT + Bcrypt
 - Zod validation
 
 **Frontend**
+
 - React + TypeScript
 - Vite
 - Tailwind CSS
@@ -34,31 +36,39 @@ flagOps/
 ## Quick Start
 
 ### Backend
+
 ```bash
 cd backend
 npm install
 npm run dev
 ```
+
 See [backend/README.md](backend/README.md) for details.
 
 ### Frontend
+
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+
 See [frontend/README.md](frontend/README.md) for details.
 
 ## Environment Variables
 
 **Backend** (`.env`)
+
 ```env
 DATABASE_URL=your_neon_database_url
 PORT=8000
 JWT_SECRET_KEY=your_jwt_secret_key
+NODE_ENV
+JWT_EXPIRES_IN
 ```
 
 **Frontend** (`.env`)
+
 ```env
 VITE_API_URL=http://localhost:8000
 ```
@@ -70,6 +80,3 @@ VITE_API_URL=http://localhost:8000
 - `GET /v1/api/flags` - List all flags
 - `POST /v1/api/flags` - Create flag (admin)
 - `GET /v1/api/evaluate` - Evaluate flag state
-
-
-
