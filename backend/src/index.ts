@@ -18,6 +18,19 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
+// Block direct URL access in production
+app.use((req, res, next) => {
+  if (envProduction.NODE_ENV === 'production') {
+    const referer = req.get('referer') || req.get('origin');
+    const allowedOrigin = envProduction.FRONTEND_URL || '';
+    
+    if (!referer || !allowedOrigin || !referer.startsWith(allowedOrigin)) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+  }
+  next();
+});
+
 app.use("/v1/api/auth", authRouter);
 app.use("/v1/api/flags", flagsRouter);
 app.use("/v1/api/evaluate", evaluateRouter);
