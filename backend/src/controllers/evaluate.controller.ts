@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { db } from "../db";
 import { eq, and } from "drizzle-orm";
-import { flags } from "../db/schema";
+import { flags } from "../db/schema/index.js";
 import type { EvaluateRequestParams } from "../types";
 import crypto from "crypto";
 

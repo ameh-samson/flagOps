@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import { db } from "../db";
-import { flags } from "../db/schema";
+import { db } from "../db/index.js";
+import { flags } from "../db/schema/index.js";
 import { eq } from "drizzle-orm";
 
 export const getFlags = async (req: Request, res: Response) => {
