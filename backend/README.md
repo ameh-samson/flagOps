@@ -1,6 +1,16 @@
 # FlagOps Backend
 
-Backend API for FlagOps built with Express, TypeScript, and Drizzle ORM.
+A feature flag management system backend API built with Express, TypeScript, and Drizzle ORM. Manage feature flags across multiple environments with role-based access control and deterministic rollout strategies.
+
+## Features
+
+- **Feature Flag Management** - Create, read, update, and delete feature flags
+- **Multi-Environment Support** - Manage flags across development, staging, and production
+- **Deterministic Rollout** - Gradual feature rollout with percentage-based targeting
+- **JWT Authentication** - Secure cookie-based authentication
+- **Role-Based Access Control** - Admin-only flag management operations
+- **Request Validation** - Zod schema validation for all endpoints
+- **Password Security** - Bcrypt password hashing
 
 ## Tech Stack
 
@@ -10,6 +20,8 @@ Backend API for FlagOps built with Express, TypeScript, and Drizzle ORM.
 - **Neon Database** - Serverless PostgreSQL
 - **Zod** - Schema validation
 - **Bcrypt** - Password hashing
+- **JWT** - Token-based authentication
+- **Cookie Parser** - Cookie handling
 - **CORS** - Cross-origin resource sharing
 
 ## Prerequisites
@@ -31,6 +43,7 @@ Create a `.env` file in the backend directory:
 ```env
 DATABASE_URL=your_neon_database_url
 PORT=8000
+JWT_SECRET_KEY=your_jwt_secret_key
 ```
 
 3. **Generate database migrations**
@@ -78,9 +91,26 @@ npm start
 backend/
 ├── src/
 │   ├── controllers/     # Request handlers
+│   │   ├── auth.controller.ts
+│   │   ├── flags.controller.ts
+│   │   └── evaluate.controller.ts
 │   ├── routes/          # API routes
+│   │   ├── auth.routes.ts
+│   │   ├── flags.routes.ts
+│   │   └── evaluate.routes.ts
+│   ├── middlewares/     # Custom middlewares
+│   │   ├── auth.ts      # JWT authentication
+│   │   ├── checkRole.ts # Role-based access control
+│   │   └── validate.ts  # Request validation
+│   ├── schemas/         # Zod validation schemas
+│   │   ├── userSchema.ts
+│   │   ├── flagsSchema.ts
+│   │   └── evaluateSchema.ts
 │   ├── db/              # Database configuration
-│   │   └── schema/      # Database schemas
+│   │   ├── schema/      # Database schemas
+│   │   └── index.ts
+│   ├── utils/           # Utility functions
+│   │   └── generateToken.ts
 │   ├── types/           # TypeScript types
 │   └── index.ts         # Entry point
 ├── drizzle/             # Generated migrations
@@ -91,7 +121,19 @@ backend/
 ## API Endpoints
 
 ### Authentication
-- `POST /api/auth/register` - Register new user
+- `POST /v1/api/auth/register` - Register new user
+- `POST /v1/api/auth/login` - Login user (returns JWT in cookie)
+- `POST /v1/api/auth/logout` - Logout user
+
+### Feature Flags (Admin Only)
+- `GET /v1/api/flags` - Get all feature flags (authenticated)
+- `GET /v1/api/flags/:id` - Get flag by ID (authenticated)
+- `POST /v1/api/flags` - Create new flag (admin only)
+- `PUT /v1/api/flags/:id` - Update flag (admin only)
+- `DELETE /v1/api/flags/:id` - Delete flag (admin only)
+
+### Flag Evaluation
+- `GET /v1/api/evaluate?flag=<name>&environment=<env>` - Evaluate if flag is enabled for user
 
 ## Dependencies
 
@@ -101,6 +143,8 @@ backend/
 - `drizzle-orm` - TypeScript ORM
 - `dotenv` - Environment variables
 - `bcrypt` - Password hashing
+- `jsonwebtoken` - JWT authentication
+- `cookie-parser` - Cookie parsing
 - `cors` - CORS middleware
 - `zod` - Schema validation
 
@@ -108,7 +152,7 @@ backend/
 - `typescript` - TypeScript compiler
 - `tsx` - TypeScript execution with hot reload
 - `drizzle-kit` - Database migration tool
-- `@types/*` - TypeScript type definitions
+- `@types/*` - TypeScript type definitions (express, bcrypt, cors, jsonwebtoken, cookie-parser, node)
 
 ---
 
@@ -125,10 +169,10 @@ npm init -y
 ### 2. Install Dependencies
 ```bash
 # Production dependencies
-npm install express dotenv cors bcrypt zod drizzle-orm @neondatabase/serverless
+npm install express dotenv cors bcrypt jsonwebtoken cookie-parser zod drizzle-orm @neondatabase/serverless
 
 # Development dependencies
-npm install -D typescript tsx @types/node @types/express @types/cors @types/bcrypt drizzle-kit
+npm install -D typescript tsx @types/node @types/express @types/cors @types/bcrypt @types/jsonwebtoken @types/cookie-parser drizzle-kit
 ```
 
 ### 3. Setup TypeScript
@@ -194,12 +238,14 @@ Create `src/index.ts`:
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 ```
@@ -207,15 +253,36 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 ### 8. Define Database Schema
 Create `src/db/schema/app.ts`:
 ```typescript
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid, unique, boolean, integer, index } from "drizzle-orm/pg-core";
+
+const timestamps = {
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()).notNull(),
+};
 
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   email: text("email").notNull().unique(),
+  name: text("name").notNull(),
   passwordHash: text("password_hash").notNull(),
   role: text("role").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  ...timestamps,
 });
+
+export const flags = pgTable(
+  "flags",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    name: text("name").notNull(),
+    description: text("description"),
+    environment: text("environment", { enum: ["development", "staging", "production"] }).notNull(),
+    defaultState: boolean("default_state").notNull(),
+    rolloutPercentage: integer("rollout_percentage").default(0).notNull(),
+    createdBy: uuid("created_by").notNull().references(() => users.id),
+    ...timestamps,
+  },
+  (t) => [unique().on(t.name, t.environment), index().on(t.environment)],
+);
 ```
 
 ### 9. Setup Database Connection
