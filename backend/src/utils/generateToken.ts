@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import type { Response } from "express";
-import { envProduction } from "./envProduction";
+import { envProduction } from "./envProduction.js";
 
 export const generateToken = (userId: string, res: Response) => {
   const payload = { id: userId };

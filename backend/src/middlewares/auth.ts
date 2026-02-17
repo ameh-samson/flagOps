@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { envProduction } from "../utils/envProduction";
+import { envProduction } from "../utils/envProduction.js";
 
 export const authenticate = (
   req: Request,

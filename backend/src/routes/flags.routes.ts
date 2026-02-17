@@ -1,15 +1,15 @@
 import express, { type Router } from "express";
-import { authenticate } from "../middlewares/auth";
-import { requireAdmin } from "../middlewares/checkRole";
-import { validateReqBody } from "../middlewares/validate";
-import { createFlagSchema, updateFlagSchema } from "../schemas/flagsSchema";
+import { authenticate } from "../middlewares/auth.js";
+import { requireAdmin } from "../middlewares/checkRole.js";
+import { validateReqBody } from "../middlewares/validate.js";
+import { createFlagSchema, updateFlagSchema } from "../schemas/flagsSchema.js";
 import {
   createFlag,
   deleteFlag,
   getFlagById,
   getFlags,
   updateFlag,
-} from "../controllers/flags.controller";
+} from "../controllers/flags.controller.js";
 
 export const flagsRouter: Router = express.Router();
 
