@@ -37,18 +37,20 @@ export const getFlagById = async (req: Request, res: Response) => {
 };
 
 export const createFlag = async (req: Request, res: Response) => {
-  const { name, description, environment, rolloutPercentage } = req.body;
-
-  const userId = (req as any).userId;
-
   try {
+    const { name, description, environment, rolloutPercentage, defaultState } =
+      req.body;
+
+    const userId = (req as any).userId;
+    const defaultStateValue = defaultState ? defaultState : false;
+
     const [newFlag] = await db
       .insert(flags)
       .values({
         name,
         description,
         environment,
-        defaultState: false,
+        defaultState: defaultStateValue,
         rolloutPercentage,
         createdBy: userId,
       })
