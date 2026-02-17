@@ -44,6 +44,8 @@ Create a `.env` file in the backend directory:
 DATABASE_URL=your_neon_database_url
 PORT=8000
 JWT_SECRET_KEY=your_jwt_secret_key
+NODE_ENV
+JWT_EXPIRES_IN
 ```
 
 3. **Generate database migrations**
