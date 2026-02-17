@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "../../../schemas/loginSchema";
 import LoginForm from "./LoginForm";
 
-
 const LoginContainer = () => {
   const {
     register,
@@ -15,7 +14,6 @@ const LoginContainer = () => {
 
   const onSubmit = (data: LoginFormData) => {
     console.log("Login data:", data);
-    // TODO: Call login API
   };
 
   return (
