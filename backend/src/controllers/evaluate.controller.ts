@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import { db } from "../db";
+import { db } from "../db/index.js";
 import { eq, and } from "drizzle-orm";
 import { flags } from "../db/schema/index.js";
-import type { EvaluateRequestParams } from "../types";
+import type { EvaluateRequestParams } from "../types/index.js";
 import crypto from "crypto";
 
 export const evaluate = async (req: Request, res: Response) => {
