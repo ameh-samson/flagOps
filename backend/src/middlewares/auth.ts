@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { envProduction } from "../utils/envProduction";
 
 export const authenticate = (
   req: Request,
@@ -15,7 +16,7 @@ export const authenticate = (
         .json({ error: "Please sign in to access this resource" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string) as {
+    const decoded = jwt.verify(token, envProduction.JWT_SECRET) as {
       id: string;
     };
 

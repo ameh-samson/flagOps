@@ -6,9 +6,10 @@ import type { Express } from "express";
 import { authRouter } from "./routes/auth.routes";
 import { flagsRouter } from "./routes/flags.routes";
 import { evaluateRouter } from "./routes/evaluate.routes";
+import { envProduction } from "./utils/envProduction";
 
 const app: Express = express();
-const PORT = process.env.PORT;
+const PORT = envProduction.PORT;
 
 app.use(express.json());
 app.use(cors());
