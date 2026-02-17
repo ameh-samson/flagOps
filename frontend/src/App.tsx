@@ -1,5 +1,8 @@
+import LoginContainer from "./components/screens/login/LoginContainer";
+
+
 function App() {
-  return <h1>Hello</h1>;
+  return <LoginContainer />;
 }
 
 export default App;
