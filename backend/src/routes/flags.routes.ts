@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Router } from "express";
 import { authenticate } from "../middlewares/auth";
 import { requireAdmin } from "../middlewares/checkRole";
 import { validateReqBody } from "../middlewares/validate";
@@ -11,7 +11,7 @@ import {
   updateFlag,
 } from "../controllers/flags.controller";
 
-export const flagsRouter = express.Router();
+export const flagsRouter: Router = express.Router();
 
 flagsRouter.get("/", authenticate, getFlags);
 flagsRouter.get("/:id", authenticate, getFlagById);

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Router } from "express";
 import {
   loginUser,
   logoutUser,
@@ -7,10 +7,9 @@ import {
 import { validateReqBody } from "../middlewares/validate";
 import { loginSchema, registerSchema } from "../schemas/userSchema";
 
-
-export const authRouter = express.Router();
+export const authRouter: Router = express.Router();
 
 authRouter.post("/register", validateReqBody(registerSchema), registerUser);
 authRouter.post("/login", validateReqBody(loginSchema), loginUser);
 authRouter.post("/logout", logoutUser);
-``
+``;
