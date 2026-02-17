@@ -5,7 +5,7 @@ import type { Response } from "express";
 export const generateToken = (userId: string, res: Response) => {
   const payload = { id: userId };
   const secret = process.env.JWT_SECRET_KEY as string;
-  const expiresIn = (process.env.JWT_EXPIRES_IN || "1h") as StringValue;
+  const expiresIn = (process.env.JWT_EXPIRES_IN || "15m") as StringValue;
 
   const token = jwt.sign(payload, secret, { expiresIn });
 
@@ -13,7 +13,7 @@ export const generateToken = (userId: string, res: Response) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-    maxAge: 1000 * 60 * 60,
+    maxAge: 1000 * 60 * 15,
   });
   return token;
 };

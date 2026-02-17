@@ -9,13 +9,12 @@ export const registerUser = async (req: Request, res: Response) => {
   try {
     const { email, password, name } = req.body;
 
-    const existingUser = await db
+    const [existingUser] = await db
       .select()
       .from(users)
       .where(eq(users.email, email));
 
-    const user = existingUser[0];
-    if (user) {
+    if (existingUser) {
       return res.status(400).json({ error: "user already exists" });
     }
 
@@ -63,12 +62,11 @@ export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    const existingUser = await db
+    const [user] = await db
       .select()
       .from(users)
       .where(eq(users.email, email));
 
-    const user = existingUser[0];
     if (!user) {
       return res.status(401).json({ error: "Invalid email or password" });
     }

@@ -23,7 +23,7 @@ export const requireAdmin = async (
 
     if (user.role !== "admin") {
       return res.status(403).json({
-        error: "You don't have the required permission to this resources",
+        error: "Access denied",
       });
     }
 

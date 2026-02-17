@@ -6,3 +6,12 @@ export const createFlagSchema = z.object({
   environment: z.enum(["development", "staging", "production"]),
   rolloutPercentage: z.number().min(0).max(100),
 });
+
+export const updateFlagSchema = z.object({
+  description: z.string().optional(),
+  defaultState: z.boolean().optional(),
+  rolloutPercentage: z.number().min(0).max(100).optional(),
+}).strict().refine(
+  (data) => Object.keys(data).length > 0,
+  { message: "At least one field must be provided" }
+);
