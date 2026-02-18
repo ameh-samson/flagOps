@@ -2,12 +2,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "../../../schemas/loginSchema";
 import LoginForm from "./LoginForm";
-import { useLoginMutation } from "@/redux/features/api-slices/auth-api-slice";
+import {
+  useLoginMutation,
+  useGetCurrentUserQuery,
+} from "@/redux/features/api-slices/auth-api-slice";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 const LoginContainer = () => {
   const [login, { isLoading }] = useLoginMutation();
+  const { refetch: refetchCurrentUser } = useGetCurrentUserQuery();
   const navigate = useNavigate();
 
   const {
@@ -26,8 +30,10 @@ const LoginContainer = () => {
         sessionStorage.setItem("token", result.data.token);
       }
 
+      await refetchCurrentUser();
+
       toast.success(result.message || "Login successful");
-      navigate("/dashboard");
+      navigate("/", { replace: true });
     } catch (err) {
       sessionStorage.removeItem("token");
       const error = err as { data?: { error?: string } };

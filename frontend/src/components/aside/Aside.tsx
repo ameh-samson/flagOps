@@ -17,7 +17,7 @@ const Aside = () => {
     <div className="bg-secondary-dark">
       <div className="flex items-center justify-between gap-1.5 py-5 px-6">
         {!isCollapsed && (
-          <Link to="/dashboard">
+          <Link to="/">
             <img src={flagOpsLogo} alt="flagOps logo" />
           </Link>
         )}

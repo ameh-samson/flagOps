@@ -4,11 +4,7 @@ import { useGetCurrentUserQuery } from "@/redux/features/api-slices/auth-api-sli
 import { useAppSelector } from "@/redux/hooks";
 import { Outlet, useNavigate } from "react-router";
 
-type ProtectedLayoutProps = {
-  requireAdmin?: boolean;
-};
-
-const ProtectedLayout = ({ requireAdmin }: ProtectedLayoutProps) => {
+const Layout = () => {
   const navigate = useNavigate();
   const { data: currentUser, isLoading, isError } = useGetCurrentUserQuery();
   const isCollapsed = useAppSelector((state) => state.navbar.isMenuCollapsed);
@@ -17,9 +13,6 @@ const ProtectedLayout = ({ requireAdmin }: ProtectedLayoutProps) => {
     return <div>Loading...</div>;
   } else if (isError || !currentUser?.data) {
     navigate("/");
-    return null;
-  } else if (currentUser?.data?.user?.role !== "admin" && requireAdmin) {
-    return <div>Access Denied: Admins Only</div>;
   }
 
   return (
@@ -41,4 +34,4 @@ const ProtectedLayout = ({ requireAdmin }: ProtectedLayoutProps) => {
   );
 };
 
-export default ProtectedLayout;
+export default Layout;
