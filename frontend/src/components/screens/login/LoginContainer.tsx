@@ -21,9 +21,15 @@ const LoginContainer = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const result = await login(data).unwrap();
+
+      if (result.data?.token) {
+        sessionStorage.setItem("token", result.data.token);
+      }
+
       toast.success(result.message || "Login successful");
       navigate("/dashboard");
     } catch (err) {
+      sessionStorage.removeItem("token");
       const error = err as { data?: { error?: string } };
       toast.error(error?.data?.error || "Login failed");
     }
