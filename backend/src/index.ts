@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use((req, res, next) => {
   if (envProduction.NODE_ENV === "production") {
     const referer = req.get("referer") || req.get("origin");
-    const allowedOrigin = envProduction.FRONTEND_URL || "http://localhost:5173";
+    const allowedOrigin = envProduction.FRONTEND_URL;
 
     if (!referer || !allowedOrigin || !referer.startsWith(allowedOrigin)) {
       return res.status(403).json({ error: "Forbidden" });
