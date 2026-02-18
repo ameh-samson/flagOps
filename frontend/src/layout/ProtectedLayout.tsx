@@ -12,7 +12,7 @@ const ProtectedLayout = ({ requireAdmin }: ProtectedLayoutProps) => {
   if (isLoading) {
     return <div>Loading...</div>;
   } else if (isError || !currentUser?.data) {
-    navigate("/");
+    navigate("/login");
     return null;
   } else if (currentUser?.data?.user?.role !== "admin" && requireAdmin) {
     return <div>Access Denied: Admins Only</div>;
