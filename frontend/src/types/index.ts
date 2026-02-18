@@ -4,6 +4,7 @@ import type {
   UseFormRegister,
 } from "react-hook-form";
 import type { LoginFormData } from "../schemas/loginSchema";
+import type { ReactNode } from "react";
 
 export type LoginProps = {
   register: UseFormRegister<LoginFormData>;
@@ -11,4 +12,11 @@ export type LoginProps = {
   onSubmit: (data: LoginFormData) => void;
   errors: FieldErrors<LoginFormData>;
   isLoading: boolean;
+};
+
+
+export type NavLinks = {
+  label: string;
+  path: string;
+  icon: ReactNode;
 };

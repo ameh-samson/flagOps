@@ -1,10 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { flagOpsApi } from "./features/api-slices/base-query-setup";
-// import userReducer from "./features/slices/userSlice";
+import navbarReducer from "./features/slices/navbar";
 
 const rootReducer = combineReducers({
   [flagOpsApi.reducerPath]: flagOpsApi.reducer,
-  // user: userReducer,
+  navbar: navbarReducer,
 });
 
 export const store = configureStore({

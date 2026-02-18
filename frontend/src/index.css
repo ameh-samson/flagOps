@@ -8,8 +8,9 @@ body {
 }
 
 @theme {
-  --color-primary: #4F46E5;
+  --color-primary: #4f46e5;
   --color-secondary: #111827;
-  --color-subtext: #6B7280;
+  --color-secondary-dark: #0f172a;
+  --color-subtext: #6b7280;
   --color-accent: #374151;
 }
