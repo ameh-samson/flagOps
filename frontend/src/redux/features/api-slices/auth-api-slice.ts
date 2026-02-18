@@ -5,18 +5,23 @@ export const authApi = flagOpsApi.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginPayload>({
       query: (body) => ({
-        url: "/v1/api/auth/login",
+        url: "/auth/login",
         method: "POST",
         body,
       }),
     }),
     logout: builder.mutation({
       query: () => ({
-        url: "/v1/api/auth/logout",
+        url: "/auth/logout",
         method: "POST",
       }),
+    }),
+
+    getCurrentUser: builder.query<LoginResponse, void>({
+      query: () => "/auth/me",
     }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation } = authApi;
+export const { useLoginMutation, useLogoutMutation, useGetCurrentUserQuery } =
+  authApi;

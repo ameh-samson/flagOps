@@ -7,11 +7,13 @@ export type User = {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: "admin" | "user";
 };
 
 export type LoginResponse = {
   status: string;
   message: string;
-  data: User;
+  data: {
+    user: User;
+  };
 };
