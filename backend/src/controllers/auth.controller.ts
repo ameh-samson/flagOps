@@ -38,7 +38,7 @@ export const registerUser = async (req: Request, res: Response) => {
       return res.status(500).json({ error: "Failed to register user" });
     }
 
-    const token = generateToken(newUser.id, res);
+    generateToken(newUser.id, res);
 
     res.status(201).json({
       status: "success",
@@ -50,7 +50,7 @@ export const registerUser = async (req: Request, res: Response) => {
           email: newUser.email,
           role: newUser.role,
         },
-        token,
+        // token,
       },
     });
   } catch (error) {
@@ -62,10 +62,7 @@ export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, email));
+    const [user] = await db.select().from(users).where(eq(users.email, email));
 
     if (!user) {
       return res.status(401).json({ error: "Invalid email or password" });
@@ -76,7 +73,7 @@ export const loginUser = async (req: Request, res: Response) => {
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
-    const token = generateToken(user.id, res);
+    generateToken(user.id, res);
 
     res.status(200).json({
       status: "success",
@@ -87,7 +84,7 @@ export const loginUser = async (req: Request, res: Response) => {
           email: user.email,
           role: user.role,
         },
-        token,
+        // token,
       },
     });
   } catch (error) {

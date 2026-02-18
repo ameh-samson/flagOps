@@ -10,4 +10,5 @@ export type LoginProps = {
   handleSubmit: UseFormHandleSubmit<LoginFormData>;
   onSubmit: (data: LoginFormData) => void;
   errors: FieldErrors<LoginFormData>;
+  isLoading: boolean;
 };

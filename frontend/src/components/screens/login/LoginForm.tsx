@@ -8,6 +8,7 @@ const LoginForm = ({
   handleSubmit,
   onSubmit,
   errors,
+  isLoading,
 }: LoginProps) => {
   return (
     <main className="h-dvh grid place-items-center place-content-center bg-[#F9FAFB] ">
@@ -57,7 +58,7 @@ const LoginForm = ({
             </button>
           </div>
 
-          <Button type="submit" id="login">
+          <Button type="submit" id="login" disabled={isLoading}>
             Login
           </Button>
         </form>

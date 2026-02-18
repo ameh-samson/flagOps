@@ -38,7 +38,7 @@ const Input = ({
           id={name}
           type={inputType}
           placeholder={placeholder}
-          aria-invalid={error ? "true" : "false"}
+          aria-invalid={!!error}
           {...register(name)}
           className={cn(
             "bg-white border border-[#D1D5DB] rounded-md p-2 placeholder:text-sm placeholder:text-[#CCCCCC] text-subtext my-1 focus:outline-none focus:border-primary focus:ring-1 focus:ring-inset focus:ring-primary w-full",

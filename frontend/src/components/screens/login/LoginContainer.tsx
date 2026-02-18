@@ -2,8 +2,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "../../../schemas/loginSchema";
 import LoginForm from "./LoginForm";
+import { useLoginMutation } from "@/redux/features/api-slices/auth-api-slice";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 const LoginContainer = () => {
+  const [login, { isLoading }] = useLoginMutation();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -12,8 +18,15 @@ const LoginContainer = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log("Login data:", data);
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      const result = await login(data).unwrap();
+      toast.success(result.message || "Login successful");
+      navigate("/dashboard");
+    } catch (err) {
+      const error = err as { data?: { error?: string } };
+      toast.error(error?.data?.error || "Login failed");
+    }
   };
 
   return (
@@ -22,6 +35,7 @@ const LoginContainer = () => {
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
       errors={errors}
+      isLoading={isLoading}
     />
   );
 };
