@@ -127,3 +127,24 @@ export const getCurrentUser = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const getUserrole = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).userId;
+
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

@@ -1,6 +1,7 @@
 import express, { type Router } from "express";
 import {
   getCurrentUser,
+  getUserrole,
   loginUser,
   logoutUser,
   registerUser,
@@ -15,3 +16,4 @@ authRouter.post("/register", validateReqBody(registerSchema), registerUser);
 authRouter.post("/login", validateReqBody(loginSchema), loginUser);
 authRouter.post("/logout", logoutUser);
 authRouter.get("/me", authenticate, getCurrentUser);
+authRouter.get("/role", authenticate, getUserrole);
