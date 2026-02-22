@@ -5,7 +5,6 @@ import {
   type RegisterFormData,
 } from "../../../schemas/authSchema";
 import {
-  useGetCurrentUserQuery,
   useGetUserRoleQuery,
   useRegisterMutation,
 } from "@/redux/features/api-slices/auth-api-slice";
@@ -15,7 +14,6 @@ import RegisterForm from "./RegisterForm";
 
 const RegisterContainer = () => {
   const [registerUser, { isLoading }] = useRegisterMutation();
-  const { refetch: refetchCurrentUser } = useGetCurrentUserQuery();
   const { refetch: refetchUserRole } = useGetUserRoleQuery();
   const navigate = useNavigate();
 
@@ -35,7 +33,6 @@ const RegisterContainer = () => {
         sessionStorage.setItem("token", result.data.token);
       }
 
-      await refetchCurrentUser();
       await refetchUserRole();
 
       toast.success(result.message || "Registration successful");

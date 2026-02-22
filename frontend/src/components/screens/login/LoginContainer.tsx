@@ -3,15 +3,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "../../../schemas/authSchema";
 import LoginForm from "./LoginForm";
 import {
+  useGetUserRoleQuery,
   useLoginMutation,
-  useGetCurrentUserQuery,
 } from "@/redux/features/api-slices/auth-api-slice";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 const LoginContainer = () => {
   const [login, { isLoading }] = useLoginMutation();
-  const { refetch: refetchCurrentUser } = useGetCurrentUserQuery();
+  const { refetch: refetchUserRole } = useGetUserRoleQuery();
   const navigate = useNavigate();
 
   const {
@@ -30,7 +30,7 @@ const LoginContainer = () => {
         sessionStorage.setItem("token", result.data.token);
       }
 
-      await refetchCurrentUser();
+      await refetchUserRole();
 
       toast.success(result.message || "Login successful");
       navigate("/", { replace: true });
