@@ -1,4 +1,5 @@
 import type {
+  LogoutResponse,
   LoginPayload,
   LoginResponse,
   RegisterPayload,
@@ -25,7 +26,7 @@ export const authApi = flagOpsApi.injectEndpoints({
       }),
     }),
 
-    logout: builder.mutation({
+    logout: builder.mutation<LogoutResponse, void>({
       query: () => ({
         url: "/auth/logout",
         method: "POST",

@@ -21,7 +21,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="px-3 py-6 space-y-1">
+    <nav className="px-3 py-6 space-y-1 flex-1">
       {navLinks.map((link) => (
         <NavLink
           to={link.path}

@@ -43,3 +43,8 @@ export type UserRoleResponse = {
     role: string;
   };
 };
+
+export type LogoutResponse = {
+  status: string;
+  message: string;
+};

@@ -27,3 +27,10 @@ export type NavLinks = {
   path: string;
   icon: ReactNode;
 };
+
+export type CardProps = {
+  title: string;
+  value: number;
+  change: string;
+  trend: "up" | "down" | "neutral";
+};
