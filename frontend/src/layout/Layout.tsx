@@ -1,18 +1,18 @@
 import Aside from "@/components/aside/Aside";
 import Header from "@/components/Header/Header";
-import { useGetCurrentUserQuery } from "@/redux/features/api-slices/auth-api-slice";
+import { useGetUserRoleQuery } from "@/redux/features/api-slices/auth-api-slice";
 import { useAppSelector } from "@/redux/hooks";
 import { Outlet, useNavigate } from "react-router";
 
 const Layout = () => {
   const navigate = useNavigate();
-  const { data: currentUser, isLoading, isError } = useGetCurrentUserQuery();
+  const { data: userRole, isLoading, isError } = useGetUserRoleQuery();
   const isCollapsed = useAppSelector((state) => state.navbar.isMenuCollapsed);
 
   if (isLoading) {
     return <div>Loading...</div>;
-  } else if (isError || !currentUser?.data) {
-    navigate("/");
+  } else if (isError || !userRole?.data) {
+    navigate("/login", { replace: true });
   }
 
   return (

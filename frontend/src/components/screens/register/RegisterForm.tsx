@@ -1,16 +1,16 @@
 import logo from "@/assets/svg/flagOps-logo.svg";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
-import type { LoginProps } from "@/types";
+import type { RegisterProps } from "@/types";
 import { Link } from "react-router";
 
-const LoginForm = ({
+const RegisterForm = ({
   register,
   handleSubmit,
   onSubmit,
   errors,
   isLoading,
-}: LoginProps) => {
+}: RegisterProps) => {
   return (
     <main className="h-dvh grid place-items-center place-content-center bg-[#F9FAFB] overflow-y-auto">
       <div className="flex flex-col items-center mb-5">
@@ -22,10 +22,19 @@ const LoginForm = ({
       </div>
 
       <div className="bg-white p-4 lg:p-8 rounded-lg w-full sm:w-md drop-shadow-md drop-shadow-black/10">
-        <h2 className="text-lg font-semibold mb-6">Sign in to your account</h2>
+        <h2 className="text-lg font-semibold mb-6">Sign up for an account</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <Input
-            label="Email"
+            label="Name"
+            type="text"
+            name="name"
+            placeholder="Name"
+            register={register}
+            error={errors.name}
+            className="border-none focus:ring-0 drop-shadow-sm drop-shadow-black/5"
+          />
+          <Input
+            label="Email address"
             type="email"
             name="email"
             placeholder="Email"
@@ -44,21 +53,6 @@ const LoginForm = ({
             className="border-none focus:ring-0 drop-shadow-sm drop-shadow-black/5"
           />
 
-          <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 text-xs cursor-pointer">
-              <Input type="checkbox" name="rememberMe" register={register} />
-              Remember me
-            </label>
-
-            <button
-              type="button"
-              id="forget password"
-              className="text-xs font-medium text-primary cursor-pointer"
-            >
-              Forgot password?
-            </button>
-          </div>
-
           <Button
             type="submit"
             id="login"
@@ -71,7 +65,7 @@ const LoginForm = ({
                 Please wait
               </span>
             ) : (
-              "Login"
+              "Register"
             )}
           </Button>
         </form>
@@ -79,12 +73,12 @@ const LoginForm = ({
 
       <p className="text-xs text-subtext mt-4">
         Don't have an account?{" "}
-        <Link to="/register" className="text-primary  font-medium">
-          Sign up
+        <Link to="/login" className="text-primary  font-medium">
+          Sign in
         </Link>
       </p>
     </main>
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

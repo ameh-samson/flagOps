@@ -3,7 +3,7 @@ import type {
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
-import type { LoginFormData } from "../schemas/loginSchema";
+import type { LoginFormData, RegisterFormData } from "../schemas/authSchema";
 import type { ReactNode } from "react";
 
 export type LoginProps = {
@@ -14,6 +14,13 @@ export type LoginProps = {
   isLoading: boolean;
 };
 
+export type RegisterProps = {
+  register: UseFormRegister<RegisterFormData>;
+  handleSubmit: UseFormHandleSubmit<RegisterFormData>;
+  onSubmit: (data: RegisterFormData) => void;
+  errors: FieldErrors<RegisterFormData>;
+  isLoading: boolean;
+};
 
 export type NavLinks = {
   label: string;

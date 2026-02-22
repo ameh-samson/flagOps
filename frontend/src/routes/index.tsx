@@ -1,15 +1,17 @@
 import LoginContainer from "@/components/screens/login/LoginContainer";
 import Layout from "@/layout/Layout";
-import { useGetCurrentUserQuery } from "@/redux/features/api-slices/auth-api-slice";
+import { useGetUserRoleQuery } from "@/redux/features/api-slices/auth-api-slice";
 import Dashboard from "@/screens/Dashboard";
 import NotFound from "@/screens/NotFound";
 import { Navigate, Route, Routes } from "react-router";
 import ProtectedRoute from "./ProtectedRoute";
 import Spinner from "@/components/Spinner";
 import { Suspense } from "react";
+import Flags from "@/screens/Flags";
+import RegisterContainer from "@/components/screens/register/RegisterContainer";
 
 const AppRoutes = () => {
-  const { data: currentUser, isLoading } = useGetCurrentUserQuery();
+  const { data: userRole, isLoading } = useGetUserRoleQuery();
 
   if (isLoading) {
     return (
@@ -28,19 +30,20 @@ const AppRoutes = () => {
       }
     >
       <>
-        {currentUser?.data ? (
+        {userRole?.data?.role ? (
           <Routes>
             <Route element={<Layout />}>
               <Route
                 path="/"
                 element={
-                  <ProtectedRoute currentUser={currentUser}>
+                  <ProtectedRoute role={userRole}>
                     <Dashboard />
                   </ProtectedRoute>
                 }
               />
 
-              <Route path="demo-app" element={<p>Demo</p>} />
+              <Route path="/feature-flags" element={<Flags />} />
+              <Route path="/demo-app" element={<p>Demo</p>} />
 
               <Route path="*" element={<NotFound />} />
             </Route>
@@ -48,6 +51,7 @@ const AppRoutes = () => {
         ) : (
           <Routes>
             <Route path="/login" element={<LoginContainer />} />
+            <Route path="/register" element={<RegisterContainer />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         )}

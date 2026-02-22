@@ -1,4 +1,10 @@
-import type { LoginPayload, LoginResponse } from "@/redux/types";
+import type {
+  LoginPayload,
+  LoginResponse,
+  RegisterPayload,
+  RegisterResponse,
+  UserRoleResponse,
+} from "@/redux/types";
 import { flagOpsApi } from "./base-query-setup";
 
 export const authApi = flagOpsApi.injectEndpoints({
@@ -10,6 +16,15 @@ export const authApi = flagOpsApi.injectEndpoints({
         body,
       }),
     }),
+
+    register: builder.mutation<RegisterResponse, RegisterPayload>({
+      query: (body) => ({
+        url: "/auth/register",
+        method: "POST",
+        body,
+      }),
+    }),
+
     logout: builder.mutation({
       query: () => ({
         url: "/auth/logout",
@@ -20,8 +35,17 @@ export const authApi = flagOpsApi.injectEndpoints({
     getCurrentUser: builder.query<LoginResponse, void>({
       query: () => "/auth/me",
     }),
+
+    getUserRole: builder.query<UserRoleResponse, void>({
+      query: () => "/auth/role",
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useGetCurrentUserQuery } =
-  authApi;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useGetCurrentUserQuery,
+  useGetUserRoleQuery,
+  useRegisterMutation,
+} = authApi;

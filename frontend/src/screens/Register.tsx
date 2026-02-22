@@ -1,5 +1,7 @@
+import RegisterContainer from "@/components/screens/register/RegisterContainer";
+
 const Register = () => {
-  return <div>Register</div>;
+  return <RegisterContainer />;
 };
 
 export default Register;

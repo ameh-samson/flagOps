@@ -1,48 +1,54 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginFormData } from "../../../schemas/authSchema";
-import LoginForm from "./LoginForm";
 import {
-  useLoginMutation,
+  registerSchema,
+  type RegisterFormData,
+} from "../../../schemas/authSchema";
+import {
   useGetCurrentUserQuery,
+  useGetUserRoleQuery,
+  useRegisterMutation,
 } from "@/redux/features/api-slices/auth-api-slice";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import RegisterForm from "./RegisterForm";
 
-const LoginContainer = () => {
-  const [login, { isLoading }] = useLoginMutation();
+const RegisterContainer = () => {
+  const [registerUser, { isLoading }] = useRegisterMutation();
   const { refetch: refetchCurrentUser } = useGetCurrentUserQuery();
+  const { refetch: refetchUserRole } = useGetUserRoleQuery();
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = async (data: RegisterFormData) => {
     try {
-      const result = await login(data).unwrap();
+      const result = await registerUser(data).unwrap();
 
       if (result.data?.token) {
         sessionStorage.setItem("token", result.data.token);
       }
 
       await refetchCurrentUser();
+      await refetchUserRole();
 
-      toast.success(result.message || "Login successful");
+      toast.success(result.message || "Registration successful");
       navigate("/", { replace: true });
     } catch (err) {
       sessionStorage.removeItem("token");
       const error = err as { data?: { error?: string } };
-      toast.error(error?.data?.error || "Login failed");
+      toast.error(error?.data?.error || "Registration failed");
     }
   };
 
   return (
-    <LoginForm
+    <RegisterForm
       register={register}
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
@@ -52,4 +58,4 @@ const LoginContainer = () => {
   );
 };
 
-export default LoginContainer;
+export default RegisterContainer;

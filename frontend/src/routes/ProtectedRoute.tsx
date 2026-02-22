@@ -1,17 +1,17 @@
-import type { LoginResponse } from "@/redux/types";
+import type { UserRoleResponse } from "@/redux/types";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  currentUser?: LoginResponse;
+  role?: UserRoleResponse;
   requiredRole?: "admin" | "user";
 }
 
 const ProtectedRoute = ({
   children,
-  currentUser,
+  role,
   requiredRole = "admin",
 }: ProtectedRouteProps) => {
-  if (!currentUser?.data || currentUser?.data.user.role !== requiredRole) {
+  if (!role?.data || role?.data.role !== requiredRole) {
     return <div>You do not have permission to access this route.</div>;
   }
 
