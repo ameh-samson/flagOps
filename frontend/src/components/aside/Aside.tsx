@@ -60,10 +60,12 @@ const Aside = () => {
         {isCurrentUserLoading ? (
           <div className="flex items-center gap-3">
             <div className="bg-gray-600 size-9 rounded-full animate-pulse" />
-            <div className="space-y-1">
-              <div className="h-3 w-20 bg-gray-600 rounded animate-pulse" />
-              <div className="h-2 w-12 bg-gray-600 rounded animate-pulse" />
-            </div>
+            {!isCollapsed && (
+              <div className="space-y-1">
+                <div className="h-3 w-20 bg-gray-600 rounded animate-pulse" />
+                <div className="h-2 w-12 bg-gray-600 rounded animate-pulse" />
+              </div>
+            )}
           </div>
         ) : (
           <div className="flex items-center gap-3">
@@ -71,14 +73,16 @@ const Aside = () => {
               {user?.name.charAt(0).toUpperCase() || "U"}
             </p>
 
-            <div>
-              <p className="text-white text-xs font-medium capitalize">
-                {user?.name || "Anonymous"}
-              </p>
-              <span className="text-subtext text-[10px] capitalize">
-                {user?.role || "User"}
-              </span>
-            </div>
+            {!isCollapsed && (
+              <div>
+                <p className="text-white text-xs font-medium capitalize">
+                  {user?.name || "Anonymous"}
+                </p>
+                <span className="text-subtext text-[10px] capitalize">
+                  {user?.role || "User"}
+                </span>
+              </div>
+            )}
           </div>
         )}
         <button

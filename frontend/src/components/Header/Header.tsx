@@ -4,7 +4,9 @@ import { useLocation } from "react-router";
 const routeTitles: Record<string, string> = {
   "/": "Dashboard",
   "/feature-flags": "Feature Flags",
+  "/analytics": "Analytics",
   "/demo-app": "Demo App",
+  "/settings": "Settings",
 };
 
 const Header = () => {

@@ -9,6 +9,9 @@ import Spinner from "@/components/Spinner";
 import { Suspense } from "react";
 import Flags from "@/screens/Flags";
 import RegisterContainer from "@/components/screens/register/RegisterContainer";
+import DemoApp from "@/screens/DemoApp";
+import Analytics from "@/screens/Analytics";
+import Settings from "@/screens/Settings";
 
 const AppRoutes = () => {
   const { data: userRole, isLoading } = useGetUserRoleQuery();
@@ -43,7 +46,9 @@ const AppRoutes = () => {
               />
 
               <Route path="/feature-flags" element={<Flags />} />
-              <Route path="/demo-app" element={<p>Demo</p>} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/demo-app" element={<DemoApp />} />
+              <Route path="/settings" element={<Settings />} />
 
               <Route path="*" element={<NotFound />} />
             </Route>

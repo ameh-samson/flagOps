@@ -17,7 +17,7 @@ const Card = ({ title, value, change, trend }: CardProps) => {
   const trendColor = trend === "up" ? "text-[#16A34A]" : "text-red-500";
 
   return (
-    <div className="bg-white rounded-lg p-5 drop-shadow-sm flex items-start justify-between min-h-35.25">
+    <div className="bg-white rounded-lg p-5 drop-shadow-sm drop-shadow-black/5 flex items-start justify-between min-h-35.25">
       <div className="space-y-4">
         <h2 className="text-xs text-subtext">{title}</h2>
         <p className="text-2xl font-bold text-secondary">{value}</p>

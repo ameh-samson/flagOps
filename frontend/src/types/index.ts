@@ -26,6 +26,7 @@ export type NavLinks = {
   label: string;
   path: string;
   icon: ReactNode;
+  roles: string[];
 };
 
 export type CardProps = {
@@ -33,4 +34,17 @@ export type CardProps = {
   value: number;
   change: string;
   trend: "up" | "down" | "neutral";
+};
+
+export type Activity = {
+  id: number;
+  user: string;
+  action: string;
+  flag: string;
+  time: string;
+  environment: string;
+};
+
+export type RecentActivityProps = {
+  activities: Activity[];
 };
