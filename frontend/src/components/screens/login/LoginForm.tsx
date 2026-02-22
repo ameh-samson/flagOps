@@ -12,7 +12,7 @@ const LoginForm = ({
   isLoading,
 }: LoginProps) => {
   return (
-    <main className="h-dvh grid place-items-center place-content-center bg-[#F9FAFB] overflow-y-auto">
+    <main className="h-dvh flex flex-col items-center justify-center bg-[#F9FAFB] overflow-y-auto px-4">
       <div className="flex flex-col items-center mb-5">
         <img src={logo} alt="flagOps logo" />
         <h1 className="text-secondary text-2xl font-bold mb-2">FlagOps</h1>
@@ -21,7 +21,7 @@ const LoginForm = ({
         </p>
       </div>
 
-      <div className="bg-white p-4 lg:p-8 rounded-lg w-full sm:w-md drop-shadow-md drop-shadow-black/10">
+      <div className="bg-white p-6 sm:p-8 rounded-lg w-full max-w-md drop-shadow-md drop-shadow-black/10">
         <h2 className="text-lg font-semibold mb-6">Sign in to your account</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <Input
