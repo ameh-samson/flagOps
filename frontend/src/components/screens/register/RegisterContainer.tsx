@@ -36,7 +36,11 @@ const RegisterContainer = () => {
       await refetchUserRole();
 
       toast.success(result.message || "Registration successful");
-      navigate("/", { replace: true });
+
+      const userRole = result.data?.user?.role;
+      const redirectPath = userRole === "user" ? "/demo-app" : "/";
+
+      navigate(redirectPath, { replace: true });
     } catch (err) {
       sessionStorage.removeItem("token");
       const error = err as { data?: { error?: string } };

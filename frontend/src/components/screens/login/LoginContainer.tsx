@@ -24,8 +24,11 @@ const LoginContainer = () => {
         sessionStorage.setItem("token", result.data.token);
       }
 
+      const userRole = result.data?.user?.role;
+      const redirectPath = userRole === "user" ? "/demo-app" : "/";
+
       toast.success(result.message || "Login successful");
-      window.location.href = "/";
+      window.location.href = redirectPath;
     } catch (err) {
       sessionStorage.removeItem("token");
       const error = err as { data?: { error?: string } };
