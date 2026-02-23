@@ -1,5 +1,4 @@
 import flagOpsLogo from "@/assets/svg/flagOps-two.svg";
-import { Link } from "react-router";
 import Navbar from "../navbar/Navbar";
 import SidebarLeft from "@/assets/tsxSvg/sidebar-left";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -37,13 +36,9 @@ const Aside = () => {
   };
 
   return (
-    <div className="bg-secondary-dark flex flex-col">
+    <aside className="bg-secondary-dark flex flex-col">
       <div className="flex items-center justify-between gap-1.5 py-5 px-6">
-        {!isCollapsed && (
-          <Link to="/">
-            <img src={flagOpsLogo} alt="flagOps logo" />
-          </Link>
-        )}
+        {!isCollapsed && <img src={flagOpsLogo} alt="flagOps logo" />}
         <button
           id={isCollapsed ? "expand-menu" : "collapse-menu"}
           aria-label={isCollapsed ? "expand-menu" : "collapse-menu"}
@@ -96,7 +91,7 @@ const Aside = () => {
           <Logout />
         </button>
       </footer>
-    </div>
+    </aside>
   );
 };
 
