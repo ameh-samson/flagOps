@@ -16,7 +16,7 @@ const RecentActivity = ({ activities }: RecentActivityProps) => {
     }
   };
   return (
-    <div className="bg-white rounded-lg p-5 drop-shadow-sm drop-shadow-black/5 w-full max-w-102.5">
+    <div className="bg-white rounded-lg p-5 drop-shadow-sm drop-shadow-black/5 w-full md:max-w-102.5">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-secondary">
           Recent Activity
