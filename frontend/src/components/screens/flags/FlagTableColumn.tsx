@@ -58,20 +58,21 @@ const flagTableColumns: FlagTableColumn[] = [
     label: "Rollout",
     width: "20%",
     render: (row: FlagData) => (
-      <div>
-        <p className="text-xs text-subtext mb-1">
-          Percentage{" "}
+      <>
+        <div className="flex items-center justify-between text-xs mb-1">
+          <p className="text-xs text-subtext ">Percentage </p>
+
           <span className="font-medium text-secondary">
             {row.rolloutPercentage}%
           </span>
-        </p>
+        </div>
         <div className="bg-[#D1D5DB] h-1.5 rounded-full w-full">
           <div
             className="bg-primary h-full rounded-full transition-all"
             style={{ width: `${row.rolloutPercentage}%` }}
           />
         </div>
-      </div>
+      </>
     ),
   },
   {
@@ -91,7 +92,11 @@ const flagTableColumns: FlagTableColumn[] = [
     render: () => (
       <Dropdown
         trigger={
-          <button id="action" aria-label="more options">
+          <button
+            id="action"
+            aria-label="more options"
+            className="cursor-pointer"
+          >
             <MoreDot />
           </button>
         }
@@ -101,10 +106,18 @@ const flagTableColumns: FlagTableColumn[] = [
             <button
               type="button"
               id="edit"
-              className="cursor-pointer"
+              className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors cursor-pointer"
               onClick={closeMenu}
             >
               Edit
+            </button>
+            <button
+              type="button"
+              id="delete"
+              className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+              onClick={closeMenu}
+            >
+              Delete
             </button>
           </div>
         )}
