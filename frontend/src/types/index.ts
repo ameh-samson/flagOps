@@ -4,7 +4,7 @@ import type {
   UseFormRegister,
 } from "react-hook-form";
 import type { LoginFormData, RegisterFormData } from "../schemas/authSchema";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 
 export type LoginProps = {
   register: UseFormRegister<LoginFormData>;
@@ -47,4 +47,25 @@ export type Activity = {
 
 export type RecentActivityProps = {
   activities: Activity[];
+};
+
+export type FlagData = {
+  id: number;
+  name: string;
+  key: string;
+  status: boolean;
+  tags: string[];
+  rolloutPercentage: number;
+  lastUpdated: string;
+};
+
+export type FlagTableColumn = {
+  key: string;
+  label: string;
+  width?: string;
+  render: (row: FlagData) => JSX.Element;
+};
+
+export type FlagsViewProps = {
+  flagsData: FlagData[];
 };

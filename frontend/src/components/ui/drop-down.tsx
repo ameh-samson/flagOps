@@ -1,3 +1,4 @@
+import { cn } from "@/lib/util";
 import React, { useState, useRef, useEffect, type ReactNode } from "react";
 
 type DropdownMenuChildren =
@@ -65,14 +66,17 @@ const Dropdown: React.FC<DropdownMenuProps> = ({
       </div>
 
       <div
-        className={`absolute mt-2 ${
-          align === "right" ? "right-0" : "left-0"
-        } bg-white border border-gray-200 rounded-md shadow-md min-w-40 z-50
+        className={cn(
+          `absolute mt-2 ${
+            align === "right" ? "right-0" : "left-0"
+          } bg-white border border-gray-200 rounded-md shadow-md min-w-40 z-50
         transition duration-200 transform origin-top ${
           isOpen
             ? "opacity-100 scale-100 pointer-events-auto"
             : "opacity-0 scale-95 pointer-events-none"
-        } ${className}`}
+        }`,
+          className,
+        )}
       >
         {typeof children === "function" ? children({ closeMenu }) : children}
       </div>

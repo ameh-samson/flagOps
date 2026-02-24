@@ -70,10 +70,10 @@ const Aside = () => {
 
             {!isCollapsed && (
               <div>
-                <p className="text-white text-xs font-medium capitalize">
+                <p className="text-white text-sm font-medium capitalize">
                   {user?.name || "Anonymous"}
                 </p>
-                <span className="text-subtext text-[10px] capitalize">
+                <span className="text-[#94A3B8] text-xs capitalize">
                   {user?.role || "User"}
                 </span>
               </div>

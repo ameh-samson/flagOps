@@ -1,5 +1,7 @@
+import FlagsContainer from "@/components/screens/flags/FlagsContainer";
+
 const Flags = () => {
-  return <section>Flags</section>;
+  return <FlagsContainer />;
 };
 
 export default Flags;
