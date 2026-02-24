@@ -20,6 +20,7 @@ Frontend application for FlagOps feature flag management system built with React
 ## Setup
 
 ### 1. Install dependencies
+
 ```bash
 npm install
 ```
@@ -27,6 +28,7 @@ npm install
 ### 2. Environment variables
 
 Create a `.env` file in the frontend directory:
+
 ```env
 VITE_API_URL=http://localhost:8000
 ```
@@ -34,6 +36,7 @@ VITE_API_URL=http://localhost:8000
 ## Development
 
 Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -43,11 +46,13 @@ Server runs on `http://localhost:5173`
 ## Production
 
 Build for production:
+
 ```bash
 npm run build
 ```
 
 Preview production build:
+
 ```bash
 npm run preview
 ```
@@ -61,26 +66,66 @@ npm run preview
 - `npm test` - Run tests in watch mode
 - `npm run test:coverage` - Run tests with coverage
 
-## Testing Setup
+## Testing
 
-### Installation
+### Testing Stack
+
+This project uses:
+
+- **Vitest** - Fast unit test framework (Vite-native)
+- **React Testing Library** - Component testing utilities
+- **@testing-library/jest-dom** - Custom matchers for DOM assertions
+- **@testing-library/user-event** - User interaction simulation
+- **jsdom** - DOM implementation for Node.js
+- **@vitest/coverage-istanbul** - Code coverage reporting
+
+### Installation Breakdown
+
+Install all testing dependencies:
 
 ```bash
 npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom @vitest/coverage-istanbul
 ```
 
-**Note:** All testing packages are already installed in this project.
+**Why each package?**
+
+1. **vitest** - Test runner (like Jest but faster with Vite)
+   - Runs your tests
+   - Provides `describe`, `it`, `expect`, `vi` (mocking)
+
+2. **@testing-library/react** - React component testing utilities
+   - `render()` - Renders components for testing
+   - `screen` - Queries for elements
+   - `cleanup()` - Cleans up after each test
+
+3. **@testing-library/jest-dom** - Custom matchers
+   - Adds matchers like `toBeInTheDocument()`, `toHaveValue()`, etc.
+   - Makes assertions more readable
+
+4. **@testing-library/user-event** - User interaction simulation
+   - `user.type()` - Simulates typing
+   - `user.click()` - Simulates clicking
+   - More realistic than `fireEvent`
+
+5. **jsdom** - Browser environment for Node.js
+   - Provides `window`, `document`, DOM APIs
+   - Required for testing React components
+
+6. **@vitest/coverage-istanbul** - Code coverage tool
+   - Tracks which code is tested
+   - Generates coverage reports
 
 ### Configuration
 
 **vite.config.ts:**
+
 ```typescript
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   // ... other config
   test: {
-    setupFiles: ["./test-setup.js"],
+    setupFiles: ["./src/test/setup.ts"],
     environment: "jsdom",
     coverage: {
       provider: "istanbul",
@@ -89,15 +134,36 @@ export default defineConfig({
 });
 ```
 
-**test-setup.js:**
-```javascript
-import "@testing-library/jest-dom/vitest";
-import { afterEach } from 'vitest'
-import { cleanup } from "@testing-library/react";
+**src/test/setup.ts:**
 
+```typescript
+import { expect, afterEach } from "vitest";
+import { cleanup } from "@testing-library/react";
+import * as matchers from "@testing-library/jest-dom/matchers";
+
+// Extend Vitest's expect with jest-dom matchers
+expect.extend(matchers);
+
+// Cleanup after each test
 afterEach(() => {
-    cleanup();
+  cleanup();
 });
+```
+
+### Running Tests
+
+```bash
+# Run tests in watch mode
+npm test
+
+# Run tests once
+npm run test:run
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests in UI mode
+npm run test:ui
 ```
 
 ### Writing Tests
@@ -107,9 +173,66 @@ Tests are co-located with components:
 ```
 src/
 ├── components/
-│   ├── Button.tsx
-│   └── Button.test.tsx
+│   ├── screens/
+│   │   ├── login/
+│   │   │   ├── LoginForm.tsx
+│   │   │   └── LoginForm.test.tsx
 ```
+
+**Example test:**
+
+```typescript
+import { describe, expect, it, vi, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import LoginForm from "./LoginForm";
+
+describe("LoginForm", () => {
+  const mockProps = {
+    register: vi.fn(),
+    handleSubmit: vi.fn((fn) => fn),
+    onSubmit: vi.fn(),
+    errors: {},
+    isLoading: false,
+  };
+
+  beforeEach(() => {
+    render(<LoginForm {...mockProps} />);
+  });
+
+  it("should render form fields", () => {
+    expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+  });
+
+  it("should handle form submission", async () => {
+    const user = userEvent.setup();
+
+    await user.type(screen.getByPlaceholderText(/email/i), "test@example.com");
+    await user.type(screen.getByPlaceholderText(/password/i), "password123");
+    await user.click(screen.getByRole("button", { name: /login/i }));
+
+    expect(mockProps.onSubmit).toHaveBeenCalledTimes(1);
+  });
+});
+```
+
+### Testing Best Practices
+
+1. **Test user behavior, not implementation**
+   - Use `screen.getByRole()`, `getByLabelText()` over `getByTestId()`
+   - Simulate real user interactions with `userEvent`
+
+2. **Use beforeEach for setup**
+   - Avoid repeating render calls
+   - Keep tests DRY
+
+3. **Mock external dependencies**
+   - Use `vi.fn()` for function mocks
+   - Mock API calls, router, etc.
+
+4. **Write descriptive test names**
+   - "should render login form" 
 
 ## Project Structure
 
@@ -136,64 +259,3 @@ frontend/
 - TypeScript for type safety
 - Vitest + React Testing Library for testing
 - ESLint for code quality
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```

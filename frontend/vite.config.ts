@@ -22,7 +22,7 @@ export default defineConfig({
   },
 
   test: {
-    setupFiles: ["./test-setup.js"],
+    setupFiles: ["./src/test/setup.ts"],
     environment: "jsdom",
     coverage: {
       provider: "istanbul",

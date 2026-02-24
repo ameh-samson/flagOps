@@ -55,7 +55,7 @@ const RegisterForm = ({
 
           <Button
             type="submit"
-            id="login"
+            id="register"
             disabled={isLoading}
             className={`${isLoading && "cursor-not-allowed bg-primary/70"}`}
           >
