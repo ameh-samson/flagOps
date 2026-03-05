@@ -14,7 +14,7 @@ const PORT = envProduction.PORT;
 app.use(express.json());
 app.use(
   cors({
-    origin: envProduction.FRONTEND_URL || "http://localhost:5173",
+    origin: envProduction.FRONTEND_URL || "http://localhost:5175",
     credentials: true,
   }),
 );
