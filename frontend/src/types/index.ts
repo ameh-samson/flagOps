@@ -5,6 +5,7 @@ import type {
 } from "react-hook-form";
 import type { LoginFormData, RegisterFormData } from "../schemas/authSchema";
 import type { JSX, ReactNode } from "react";
+import type { NewFlagFormData } from "@/schemas/newFlagSchema";
 
 export type LoginProps = {
   register: UseFormRegister<LoginFormData>;
@@ -52,9 +53,9 @@ export type RecentActivityProps = {
 export type FlagData = {
   id: number;
   name: string;
-  key: string;
+  description: string
+  environment: "development" | "staging" | "production";
   status: boolean;
-  tags: string[];
   rolloutPercentage: number;
   lastUpdated: string;
 };
@@ -68,4 +69,12 @@ export type FlagTableColumn = {
 
 export type FlagsViewProps = {
   flagsData: FlagData[];
+};
+
+export type CreateNewFlagFormProps = {
+  register: UseFormRegister<NewFlagFormData>;
+  handleSubmit: UseFormHandleSubmit<NewFlagFormData>;
+  onSubmit: (data: NewFlagFormData) => void;
+  errors: FieldErrors<NewFlagFormData>;
+  isLoading: boolean;
 };

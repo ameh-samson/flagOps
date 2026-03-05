@@ -32,25 +32,18 @@ const flagTableColumns: FlagTableColumn[] = [
         <p className="text-sm font-medium text-secondary truncate">
           {row.name}
         </p>
-        <span className="text-xs text-subtext truncate block">{row.key}</span>
+        <p>{row.environment}</p>
       </div>
     ),
   },
   {
-    key: "tags",
-    label: "Tags",
+    key: "description",
+    label: "Description",
     width: "20%",
     render: (row: FlagData) => (
-      <div className="flex flex-wrap gap-1">
-        {row.tags?.map((tag, index) => (
-          <span
-            key={index + tag}
-            className="px-2 py-1 text-xs bg-[#F3F4F6] text-[#1F2937] rounded-sm"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
+      <p className="text-sm font-medium text-secondary truncate">
+        {row.description}
+      </p>
     ),
   },
   {

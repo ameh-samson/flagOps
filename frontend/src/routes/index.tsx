@@ -7,11 +7,12 @@ import { Navigate, Route, Routes } from "react-router";
 import ProtectedRoute from "./ProtectedRoute";
 import Spinner from "@/components/Spinner";
 import { Suspense } from "react";
-import Flags from "@/screens/Flags";
+import Flags from "@/screens/flags/Flags";
 import RegisterContainer from "@/components/screens/register/RegisterContainer";
 import DemoApp from "@/screens/DemoApp";
 import Analytics from "@/screens/Analytics";
 import Settings from "@/screens/Settings";
+import CreateNewFlag from "@/screens/flags/CreateNewFlag";
 
 const AppRoutes = () => {
   const { data: userRole, isLoading } = useGetUserRoleQuery();
@@ -46,6 +47,8 @@ const AppRoutes = () => {
               />
 
               <Route path="/feature-flags" element={<Flags />} />
+              <Route path="/feature-flags/new" element={<CreateNewFlag />} />
+
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/demo-app" element={<DemoApp />} />
               <Route path="/settings" element={<Settings />} />
